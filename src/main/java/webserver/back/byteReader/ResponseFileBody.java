@@ -1,14 +1,13 @@
 package webserver.back.byteReader;
 
-import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class ResponseStaticFileBody implements Body {
+public class ResponseFileBody implements Body {
     private FileInputStream fileInputStream;
     private String contentType;
-    public ResponseStaticFileBody(String fileUrl, String contentType) throws FileNotFoundException {
+    public ResponseFileBody(String fileUrl, String contentType) throws FileNotFoundException {
         this.fileInputStream = new FileInputStream(fileUrl);
         this.contentType = contentType;
     }

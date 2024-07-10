@@ -28,6 +28,9 @@ public class HttpResponse extends HttpMessage{
     public void addLocation(String location){
         additionalHeader.put("Location", location);
     }
+    public void addCookie(String cookie,String path){
+        additionalHeader.put("Set-Cookie", cookie+"; Path="+path);
+    }
     public HashMap<String, String> getAdditionalHeader() {
         return additionalHeader;
     }

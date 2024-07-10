@@ -18,7 +18,7 @@ public class HttpRequestMaker {
         String firstLine = br.readLine();
 
         FirstLine fl = getFirstLine(firstLine);
-//        logger.debug(firstLine);
+        logger.debug(firstLine);
         //System.out.println(firstLine);
         String contentType = "";
         while(true){
@@ -28,14 +28,14 @@ public class HttpRequestMaker {
             if(headerData[0].equals("Content-Type")){
                 contentType = headerData[1].trim();
             }
-//            logger.debug(line);
+            logger.debug(line);
             //System.out.println(line);
         }
         StringBuilder sb = new StringBuilder();
         while(br.ready()){
             sb.append((char)br.read());
         }
-//        System.out.println(sb);
+        System.out.println(sb);
         RequestBody requestBody = new RequestBody(contentType,sb.toString());
 
 

@@ -7,6 +7,7 @@ public enum StatusCode {
     FOUND("FOUND","302"),
     METHOD_NOT_ALLOWED("METHOD_NOT_ALLOWED","405"),
     BAD_REQUEST("BAD_REQUEST","400");
+
     private String code;
     private String message;
     StatusCode(String message,String code) {
