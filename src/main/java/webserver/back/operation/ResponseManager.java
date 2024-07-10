@@ -1,7 +1,7 @@
 package webserver.back.operation;
 
 import webserver.back.Error.WrongDataFormatException;
-import webserver.back.requestDataMaker.RequestData;
+import webserver.back.requestDataMaker.ParsedRequestData;
 import webserver.back.data.SignInForm;
 import webserver.back.data.StatusCode;
 import webserver.back.fileFounder.StaticFileFounder;
@@ -17,25 +17,23 @@ public class ResponseManager {
     public ResponseManager(UserMapper userMapper){
         this.userMapper = userMapper;
     }
-    public HttpResponse getResponse(HttpRequest request)  {
+    public HttpResponse getResponse(HttpRequest httpRequest)  {
         HttpResponseMaker httpResponseMaker = new HttpResponseMaker();
         String message;
-        String originalUrl = request.getUrl();
+        String originalUrl = httpRequest.getUrl();
         Body body;
         try{
             String changedPath;
-            RequestData requestData = RequestDataMaker.getRequestData(request);
-            String pathWithOutData = requestData.getUrl();
-            System.out.println(pathWithOutData);
+            ParsedRequestData parsedRequestData = RequestDataMaker.getRequestData(httpRequest);
+            String pathWithOutData = parsedRequestData.getUrl();
             if (pathWithOutData.equals("/registration")) {
                 changedPath = "/registration/index.html";
                 body = new StaticFileFounder().findFile(changedPath);
                 message = StatusCode.OK.getMessage();
                 return httpResponseMaker.makeHttpResponse(body,message);
             }
-            if (pathWithOutData.equals("/create")) {
-                System.out.println(requestData.getBodyVariables().size());
-                SignInForm signInForm = new SignInForm(requestData.getBodyVariables());
+            if (pathWithOutData.equals("/create") && httpRequest.getMethod().equals("POST")){
+                SignInForm signInForm = new SignInForm(parsedRequestData.getBodyVariables());
                 body = userMapper.addUser(signInForm);
                 message =StatusCode.FOUND.getMessage();
                 String location ="/index.html";
@@ -56,6 +54,7 @@ public class ResponseManager {
         }
         catch (Exception e){
             message = StatusCode.ERROR.getMessage();
+            e.printStackTrace();
             return httpResponseMaker.makeHttpResponseError(message,e.getMessage());
         }
     }

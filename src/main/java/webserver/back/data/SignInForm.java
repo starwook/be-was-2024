@@ -2,7 +2,6 @@ package webserver.back.data;
 
 import webserver.back.Error.WrongDataFormatException;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class SignInForm {
@@ -23,13 +22,13 @@ public class SignInForm {
     }
 
     public SignInForm(Map<String,String> informations) throws WrongDataFormatException {
-        System.out.println(informations.size());
+        if(informations==null) throw new WrongDataFormatException();
         this.name = informations.get("name");
         this.password = informations.get("password");
         this.userId = informations.get("userId");
-        checkNotNull();
+        CheckVariablesNotNull();
     }
-    public void checkNotNull() throws WrongDataFormatException{
+    public void CheckVariablesNotNull() throws WrongDataFormatException{
         if(name==null||password==null||userId==null) throw new WrongDataFormatException("data should not be null");
     }
 }

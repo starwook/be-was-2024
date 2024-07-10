@@ -1,11 +1,7 @@
 package webserver.back.requestDataMaker;
 
-import webserver.back.contentType.BaseContentType;
-import webserver.back.contentType.ContentTypeMaker;
 import webserver.front.data.HttpRequest;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 public class RequestBodyParser implements RequestParser{
@@ -19,8 +15,8 @@ public class RequestBodyParser implements RequestParser{
         }
         String contentType = httpRequest.getContentType();
         byte[] body = httpRequest.getBody();
-        if(contentType.equals("application/x-www-form-urlencoded")) {
-            data= parseParamBody(Arrays.toString(body));
+        if(contentType.startsWith("application/x-www-form-urlencoded")) {
+            data= parseParamBody(new String(body));
             containsData = true;
             return;
         }
@@ -37,7 +33,12 @@ public class RequestBodyParser implements RequestParser{
         return containsData;
     }
 
-    public HashMap<String, String> parseParamBody(String body) {
+    @Override
+    public void putDataToRequestData(ParsedRequestData parsedRequestData) {
+        parsedRequestData.setBodyVariables(data);
+    }
+
+    public Map<String, String> parseParamBody(String body) {
         return ParamParser.parseParam(body);
     }
 }

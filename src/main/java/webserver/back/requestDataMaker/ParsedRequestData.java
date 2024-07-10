@@ -1,29 +1,27 @@
 package webserver.back.requestDataMaker;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
-public class RequestData {
+public class ParsedRequestData {
     private String[] pathNotChanging;
     private  boolean ifAdditionalInformationExist;
     private Map<String, String> parameters;
     private Map<String, String> pathVariables;
     private Map<String, String> bodyVariables;
 
-    public RequestData() {
+    public ParsedRequestData() {
 
     }
 
-    public void setParameters(RequestParser requestParser){
-        this.parameters = requestParser.getDatas();
-
+    public void setParameters(Map<String, String> parameters){
+        this.parameters = parameters;
     }
-    public void setPathVariables(RequestParser requestParser){
-        this.pathVariables = requestParser.getDatas();
+    public void setPathVariables(Map<String, String> pathVariables){
+        this.pathVariables = pathVariables;
     }
-    public void setBodyVariables(RequestParser requestParser){
-        this.bodyVariables = requestParser.getDatas();
+    public void setBodyVariables(Map<String, String> bodyVariables) {
+        this.bodyVariables = bodyVariables;
     }
 
     public String getUrl() {

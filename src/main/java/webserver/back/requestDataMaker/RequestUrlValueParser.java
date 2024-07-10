@@ -20,4 +20,9 @@ public class RequestUrlValueParser implements RequestParser {
     public boolean ifContainsData() {
         return false;
     }
+
+    @Override
+    public void putDataToRequestData(ParsedRequestData parsedRequestData) {
+
+    }
 }

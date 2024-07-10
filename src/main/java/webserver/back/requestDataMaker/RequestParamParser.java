@@ -2,8 +2,6 @@ package webserver.back.requestDataMaker;
 
 import webserver.front.data.HttpRequest;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 public class RequestParamParser implements RequestParser{
@@ -29,6 +27,11 @@ public class RequestParamParser implements RequestParser{
     @Override
     public boolean ifContainsData() {
         return ifContainsData;
+    }
+
+    @Override
+    public void putDataToRequestData(ParsedRequestData parsedRequestData) {
+        parsedRequestData.setParameters(data);
     }
 
     public String[] getPathNotChanging(String path) {

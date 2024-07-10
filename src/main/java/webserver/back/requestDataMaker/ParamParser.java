@@ -1,12 +1,13 @@
 package webserver.back.requestDataMaker;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class ParamParser {
 
-    public static HashMap<String,String> parseParam(String parameter) {
+    public static Map<String,String> parseParam(String parameter) {
         String[] paramSeperated = parameter.split("&");
-        HashMap<String, String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         for (String param : paramSeperated) {
             String[] keyValue = param.split("=");
             map.put(keyValue[0], keyValue[1]);
