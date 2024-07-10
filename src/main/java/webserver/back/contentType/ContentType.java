@@ -11,6 +11,7 @@ public enum ContentType {
     JPG("jpg","jpeg"),
     ICO("ico","x-icon"),
     SVG("svg","svg+xml"),
+    XXX_FORM("x-www-form-urlencoded","x-www-form-urlencoded"),
     ;
 
     private String extension;

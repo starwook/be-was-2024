@@ -5,7 +5,7 @@ import webserver.back.data.StatusCode;
 import webserver.back.byteReader.Body;
 import webserver.front.data.HttpResponse;
 
-public class ResponseDataMaker {
+public class HttpResponseMaker {
     public HttpResponse makeHttpResponse(Body body, String message){
         HttpResponse httpResponse = new HttpResponse("HTTP/1.1",
                 StatusCode.getCode(message),

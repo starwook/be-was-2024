@@ -24,7 +24,7 @@ public class ResponseMaker {
         this.responseWriter = responseWriter;
     }
     public void makeResponse(HttpRequest httpRequest, OutputStream out) throws IOException {
-        HttpResponse httpResponse = responseManager.getResponse(httpRequest.getUrl());
+        HttpResponse httpResponse = responseManager.getResponse(httpRequest);
         responseWriter.response(httpResponse,out);
     }
 }

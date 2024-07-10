@@ -3,6 +3,7 @@ package webserver.back.data;
 import webserver.back.Error.WrongDataFormatException;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class SignInForm {
 
@@ -21,7 +22,8 @@ public class SignInForm {
         return userId;
     }
 
-    public SignInForm(HashMap<String,String> informations) throws WrongDataFormatException {
+    public SignInForm(Map<String,String> informations) throws WrongDataFormatException {
+        System.out.println(informations.size());
         this.name = informations.get("name");
         this.password = informations.get("password");
         this.userId = informations.get("userId");

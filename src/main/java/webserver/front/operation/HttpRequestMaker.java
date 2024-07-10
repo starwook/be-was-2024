@@ -2,7 +2,6 @@ package webserver.front.operation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import webserver.back.byteReader.Body;
 import webserver.back.byteReader.RequestBody;
 import webserver.front.data.HttpRequest;
 
@@ -10,12 +9,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
-public class RequestDataMaker {
+public class HttpRequestMaker {
 
-    private static final Logger logger = LoggerFactory.getLogger(RequestDataMaker.class);
+    private static final Logger logger = LoggerFactory.getLogger(HttpRequestMaker.class);
     public HttpRequest parseRequest(InputStream in) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
         String firstLine = br.readLine();
@@ -38,6 +35,7 @@ public class RequestDataMaker {
         }
         RequestBody requestBody = new RequestBody(contentType,sb.toString());
 
+        System.out.println(sb.toString());
         return new HttpRequest(fl.httpVersion(), fl.method(), fl.url(), requestBody.makeBytes(), requestBody.getContentType());
     }
 
