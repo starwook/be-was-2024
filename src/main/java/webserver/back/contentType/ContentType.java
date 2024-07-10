@@ -15,17 +15,25 @@ public enum ContentType {
     ;
 
     private String extension;
-    private String contentType;
+    private String value;
 
-    ContentType(String extension, String contentType) {
+    public String getExtension() {
+        return extension;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    ContentType(String extension, String value) {
         this.extension = extension;
-        this.contentType = contentType;
+        this.value = value;
     }
     public static String getContentType(String extension){
         return Stream.of(ContentType.values())
                 .filter(ct -> extension.endsWith(ct.extension))
-                .map(ct->ct.contentType)
+                .map(ct->ct.value)
                 .findFirst()
-                .orElse(PLAIN.contentType);
+                .orElse(PLAIN.value);
     }
 }

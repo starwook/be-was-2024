@@ -5,6 +5,15 @@ import java.util.HashMap;
 public class HttpResponse extends HttpMessage{
     private final HashMap<String, String> additionalHeader = new HashMap<>();
     public String statusCode;
+
+    public String getStatusCode() {
+        return statusCode;
+    }
+
+    public String getStatusText() {
+        return statusText;
+    }
+
     public String statusText;
     private String firstLine;
     public HttpResponse(String httpVersion, String statusCode, String statusText, byte[] body,String contentType) {

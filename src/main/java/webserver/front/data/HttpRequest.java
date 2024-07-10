@@ -19,6 +19,7 @@ public class HttpRequest extends HttpMessage{
         this.method = method;
         this.url = url;
     }
+
     public HttpRequest( String httpVersion, String method, String url,byte[] body,String contentType) {
         super(httpVersion,body,contentType);
         this.method = method;
