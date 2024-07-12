@@ -4,7 +4,6 @@ import webserver.back.Error.UserNotFoundException;
 import webserver.back.model.User;
 import webserver.back.session.Session;
 
-import javax.management.relation.Role;
 import java.util.*;
 
 public class Database {
@@ -29,12 +28,13 @@ public class Database {
         sessions.add(session);
         return session.getSessionId();
     }
+    public static List<Session> findAllSessions() {return sessions;}
 
     public static User findUserById(String userId) {
         return users.get(userId);
     }
 
-    public static Collection<User> findAll() {
-        return users.values();
+    public static List<User> findAllUsers() {
+        return users.values().stream().toList();
     }
 }

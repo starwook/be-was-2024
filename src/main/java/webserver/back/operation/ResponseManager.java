@@ -2,6 +2,7 @@ package webserver.back.operation;
 
 import webserver.back.Error.UserNotFoundException;
 import webserver.back.Error.WrongDataFormatException;
+import webserver.back.byteReader.ResponseErrorBody;
 import webserver.back.fileFounder.TemplateFileFounder;
 import webserver.back.requestDataMaker.ParsedRequestData;
 import webserver.back.data.SignInForm;
@@ -13,14 +14,16 @@ import webserver.front.data.HttpRequest;
 import webserver.front.data.HttpResponse;
 
 import java.io.FileNotFoundException;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ResponseManager {
     private final UserMapper userMapper;
     public ResponseManager(UserMapper userMapper){
         this.userMapper = userMapper;
     }
-    public HttpResponse getResponse(HttpRequest httpRequest)  {
-
+    public HttpResponse getResponse(HttpRequest httpRequest) {
         String message;
         String originalUrl = httpRequest.getUrl();
         Body body;
@@ -50,6 +53,29 @@ public class ResponseManager {
                 body = new TemplateFileFounder().findFile(pathWithOutData);
                 message = StatusCode.OK.getMessage();
                 return HttpResponseMaker.makeHttpResponse(body,message);
+            }
+            if(pathWithOutData.equals("/index.html")&&httpRequest.getMethod().equals("GET")){
+                body = new StaticFileFounder().findFile(originalUrl);
+                message =StatusCode.OK.getMessage();
+                if(!httpRequest.getSid().isEmpty()){
+                    StringBuilder sb = new StringBuilder();
+                    String html = new String(body.makeBytes(), StandardCharsets.UTF_8);
+                    String[] lines = html.split("\n");
+                    for(int i=0; i<lines.length; i++){
+                        String line = lines[i];
+                        if(line.contains("로그인") ||line.contains("회원 가입")){ continue;
+                        }
+                        sb.append(line).append("\n");
+                    }
+                    return HttpResponseMaker.makeHttpResponse(sb.toString().getBytes(StandardCharsets.UTF_8),"text/html",message);
+
+
+                }
+                return HttpResponseMaker.makeHttpResponse(body,message);
+            }
+            if(pathWithOutData.equals("/user/list") &&httpRequest.getMethod().equals("GET")){
+                String changedUrl = "/user/list.html";
+                return userMapper.showUserList(httpRequest,changedUrl);
             }
             //없는 리소스 표시(404)
             body = new StaticFileFounder().findFile(originalUrl);

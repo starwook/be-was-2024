@@ -8,6 +8,7 @@ public class ResponseErrorBody implements Body{
         this.errorCause = errorCause;
     }
 
+
     @Override
     public String getContentType() {
         return this.contentType;

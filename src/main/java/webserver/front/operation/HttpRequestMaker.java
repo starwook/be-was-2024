@@ -21,14 +21,25 @@ public class HttpRequestMaker {
         logger.debug(firstLine);
         //System.out.println(firstLine);
         String contentType = "";
+        String sid = "";
         while(true){
             String line = br.readLine();
             if(line.isEmpty()) break;
+            logger.debug(line);
             String[] headerData = line.split(":");
             if(headerData[0].equals("Content-Type")){
                 contentType = headerData[1].trim();
             }
-            logger.debug(line);
+            if(headerData[0].equals("Cookie")){
+                String[] cookieData = headerData[1].split(";");
+                for(String cookie : cookieData){
+                    String[] keyValue = cookie.split("=");
+                    if(keyValue[0].trim().equals("sid")){
+                        sid = keyValue[1].trim();
+                    }
+                }
+            }
+
             //System.out.println(line);
         }
         StringBuilder sb = new StringBuilder();
@@ -38,8 +49,9 @@ public class HttpRequestMaker {
         System.out.println(sb);
         RequestBody requestBody = new RequestBody(contentType,sb.toString());
 
-
-        return new HttpRequest(fl.httpVersion(), fl.method(), fl.url(), requestBody.makeBytes(), requestBody.getContentType());
+        HttpRequest httpRequest = new HttpRequest(fl.httpVersion(), fl.method(), fl.url(), requestBody.makeBytes(), requestBody.getContentType());
+        httpRequest.setSid(sid);
+        return httpRequest;
     }
 
     private static FirstLine getFirstLine(String firstLine) {

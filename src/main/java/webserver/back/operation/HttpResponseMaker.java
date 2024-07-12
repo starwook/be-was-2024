@@ -8,12 +8,18 @@ import webserver.front.data.HttpResponse;
 
 public class HttpResponseMaker {
     public static HttpResponse makeHttpResponse(Body body, String message){
-        HttpResponse httpResponse = new HttpResponse("HTTP/1.1",
+        return new HttpResponse("HTTP/1.1",
                 StatusCode.getCode(message),
                 message,
                 body.makeBytes(),
                 body.getContentType());
-        return httpResponse;
+    }
+    public static HttpResponse makeHttpResponse(byte[] body, String contentType ,String message){
+        return new HttpResponse("HTTP/1.1",
+                StatusCode.getCode(message),
+                message,
+                body,
+                contentType);
     }
     public static HttpResponse makeHttpResponse(Body body, String message, String location){
         HttpResponse httpResponse = makeHttpResponse(body, message);

@@ -6,6 +6,7 @@ public class HttpRequest extends HttpMessage{
     private String firstLine;
     private String method;
     private String url;
+    private String sid;
 
     public String getMethod() {
         return method;
@@ -25,6 +26,13 @@ public class HttpRequest extends HttpMessage{
         super(httpVersion,body,contentType);
         this.method = method;
         this.url = url;
+    }
 
+    public void setSid(String sid) {
+        this.sid = sid;
+    }
+
+    public String getSid() {
+        return sid;
     }
 }

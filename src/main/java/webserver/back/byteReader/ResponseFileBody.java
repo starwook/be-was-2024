@@ -26,4 +26,7 @@ public class ResponseFileBody implements Body {
             return new byte[0];
         }
     }
+    public String makeString(){
+        return fileInputStream.toString();
+    }
 }

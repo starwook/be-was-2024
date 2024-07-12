@@ -1,20 +1,15 @@
 package webserver.back.operation;
 
 import org.assertj.core.api.Assertions;
-import org.assertj.core.internal.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import webserver.StringUtil;
-import webserver.back.Error.WrongDataFormatException;
 import webserver.back.contentType.BaseContentType;
 import webserver.back.contentType.ContentType;
 import webserver.back.data.StatusCode;
+import webserver.back.db.Database;
 import webserver.front.data.HttpRequest;
 
-import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 
 class ResponseManagerTest {
@@ -25,6 +20,25 @@ class ResponseManagerTest {
     String createUserParam ="userId=javajigi&password=password&name=%EB%B0%95%EC%9E%AC%EC%84%B1";
     byte[] createUserByte = createUserParam.getBytes(StandardCharsets.UTF_8);
     String createUserbaseUrl ="/create";
+    String loginUserParam ="userId=javajigi&password=password";
+    String loginUrl = "/user/login";
+    byte[] loginUserByte = loginUserParam.getBytes(StandardCharsets.UTF_8);
+
+
+    @Test
+    @DisplayName("/세션 생성(정상)")
+    void userLogin() {
+        registerUser();
+        HttpRequest httpRequest = new HttpRequest(
+                StringUtil.STANDARD_HTTP_VERSION,
+                StringUtil.METHOD_POST,
+                loginUrl,
+                loginUserByte,
+                BaseContentType.APPLICATION.getValue()+"/"+ ContentType.XXX_FORM.getValue());
+        Assertions.assertThat(StatusCode.FOUND.getMessage()).isEqualTo(responseManager.getResponse(httpRequest).getStatusText());
+        Assertions.assertThat(Database.findAllSessions().size()).isEqualTo(1);
+    }
+
 
 
 
@@ -38,6 +52,7 @@ class ResponseManagerTest {
                 createUserByte,
                 BaseContentType.APPLICATION.getValue()+"/"+ ContentType.XXX_FORM.getValue());
         Assertions.assertThat(StatusCode.FOUND.getMessage()).isEqualTo(responseManager.getResponse(httpRequest).getStatusText());
+        Assertions.assertThat(Database.findAllUsers().size()).isEqualTo(1);
     }
     @Test
     @DisplayName("/create api 검증(GET 일떄)")
@@ -49,6 +64,7 @@ class ResponseManagerTest {
                 createUserByte,
                 BaseContentType.APPLICATION.getValue()+"/"+ ContentType.XXX_FORM.getValue());
         Assertions.assertThat(StatusCode.NOT_FOUND.getMessage()).isEqualTo(responseManager.getResponse(httpRequest).getStatusText());
+
     }
     @Test
     @DisplayName("/create api 검증(param으로 정보가 올떄)")

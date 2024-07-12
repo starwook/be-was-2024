@@ -1,7 +1,5 @@
 package webserver.back.requestDataMaker;
-
 import webserver.front.data.HttpRequest;
-
 import java.util.Map;
 
 public class RequestParamParser implements RequestParser{
