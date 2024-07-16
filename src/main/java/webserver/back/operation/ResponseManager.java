@@ -20,8 +20,11 @@ import java.util.Map;
 
 public class ResponseManager {
     private final UserMapper userMapper;
+    private final ArticleMapper articleMapper;
     public ResponseManager(UserMapper userMapper){
+
         this.userMapper = userMapper;
+        this.articleMapper = new ArticleMapper();
     }
     public HttpResponse getResponse(HttpRequest httpRequest) {
         String message;
@@ -76,6 +79,18 @@ public class ResponseManager {
             if(pathWithOutData.equals("/user/list") &&httpRequest.getMethod().equals("GET")){
                 String changedUrl = "/user/list.html";
                 return userMapper.showUserList(httpRequest,changedUrl);
+            }
+            if(pathWithOutData.equals("/write")&&httpRequest.getMethod().equals("GET")){
+                if(httpRequest.getSid().isEmpty())
+                    return  HttpResponseMaker.makeHttpResponse(new ResponseErrorBody(StatusCode.BAD_REQUEST.getMessage()),StatusCode.FOUND.getMessage(),"/user/login.html");
+                String changedUrl = "/article/index.html";
+                body = new StaticFileFounder().findFile(changedUrl);
+                message = StatusCode.OK.getMessage();
+                return HttpResponseMaker.makeHttpResponse(body,message);
+            }
+            if(pathWithOutData.equals("/write") &&httpRequest.getMethod().equals("POST")){
+                return articleMapper.makeArticle(parsedRequestData.getBodyVariables());
+
             }
             //없는 리소스 표시(404)
             body = new StaticFileFounder().findFile(originalUrl);

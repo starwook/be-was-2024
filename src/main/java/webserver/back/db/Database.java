@@ -1,6 +1,7 @@
 package webserver.back.db;
 
 import webserver.back.Error.UserNotFoundException;
+import webserver.back.model.Article;
 import webserver.back.model.User;
 import webserver.back.session.Session;
 
@@ -9,6 +10,15 @@ import java.util.*;
 public class Database {
     private static Map<String, User> users = new HashMap<>();
     private static List<Session> sessions = new ArrayList<>();
+    private static List<Article> articles = new ArrayList<>();
+    public static int articleId =0;
+
+    public static Article addArticle(Article article) {
+        article.setArticleId(String.valueOf(articleId));
+        articleId++;
+        articles.add(article);
+        return article;
+    }
 
     public static User addUser(User user) {
         users.put(user.getUserId(), user);
@@ -28,6 +38,11 @@ public class Database {
         sessions.add(session);
         return session.getSessionId();
     }
+
+    public static List<Article> getArticles() {
+        return articles;
+    }
+
     public static List<Session> findAllSessions() {return sessions;}
 
     public static User findUserById(String userId) {
